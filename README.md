@@ -77,5 +77,7 @@ kortix validate && bash scripts/check-grants.sh && kortix ship
 - Manifest reference, key by key: [kortix.com/docs/project/manifest](https://kortix.com/docs/project/manifest)
 - What an open-source Claude Tag is, the project that uses the name, and Kortix as the runtime behind this kit: [open-source Claude Tag, by layer](https://claudetagalternative.com/open-source-claude-tag)
 - If you are weighing the two paths for a team: [Claude Tag vs Kortix](https://claudetagalternative.com/claude-tag-vs-kortix) compares them on the questions that decide it — where the agent runs, which model it uses, who approves a write, and what happens to the transcript.
+- Slack decides who may install an agent and Anthropic decides what it may reach, which is two different admins on two different consoles: [Claude Tag in Slack](https://claudetagalternative.com/claude-tag-slack) walks the install path, the join policy and the identity link against the same steps in this kit.
+- The old Claude in Slack app stopped answering in channels on 2026-10-05, after the switch to Claude Tag began on 2026-08-03, and a channel can still be pointed at the retired version: [Claude in Slack, retired](https://claudetagalternative.com/claude-in-slack) sets out the two setups that answer under one `@Claude` handle and which account pays for each.
 
 The repository is a starting point, not a product: change the grants, delete the examples, keep the review loop.
