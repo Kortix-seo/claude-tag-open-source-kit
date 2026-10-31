@@ -22,18 +22,17 @@ usual; the manifest still only takes effect on the default branch.
 
 ## 2. Connect Slack
 
-```bash
-kortix channels connect
-```
+Open **Customize → Connectors** in the project, select the **Channels** scope
+and choose **Add to Slack**. Pick the workspace, allow the install, and the
+workspace is connected.
 
-Open the link it prints, pick the workspace, allow. On a host without the shared
-Slack app, `kortix channels connect --manual` prints a manifest you paste at
-`api.slack.com/apps` (create the app **From a manifest**), then
-`kortix channels connect --bot-token xoxb-… --signing-secret …`.
+On a self-hosted instance, set `SLACK_CLIENT_ID`, `SLACK_CLIENT_SECRET` and
+`SLACK_SIGNING_SECRET` and the same button installs your own Slack app. Without
+all three, each project connects its own Slack app.
 
-`kortix channels status` shows the workspace, the bot user and the webhook URL.
-`kortix channels bindings` lists each bound channel with its agent, model and
-join policy.
+A connected workspace gives every channel its own settings: the agent that runs
+in it, the model a new thread starts on, and the join policy that decides who
+may take part.
 
 ## 3. Let people in
 
@@ -42,7 +41,6 @@ Invite the bot to the channel. Then every person who will use it sends
 once, and expires in 10 minutes. A message sent before linking runs when the
 person links within those 10 minutes.
 
-- `/kortix whoami` shows the account a person is linked as.
 - An unlinked sender gets a connect prompt, not a run.
 - A linked member without access to the project gets a request-access card that
   account admins see in Kortix.
@@ -65,16 +63,19 @@ resumed.
 
 ## The settings that matter after install
 
-| Setting | Command | What it decides |
+| Setting | Where it lives | What it decides |
 | --- | --- | --- |
-| Agent | `/kortix agent slack-ops` | Which agent runs in this channel. The default is the project's `default_agent`. |
-| Model | `/kortix models`, `/kortix model <id>` | Which model the next new thread runs. A thread keeps the model it started with. |
-| Join policy | `/kortix policy owner_approval` | `project_open` (any linked member), `owner_approval` (the session owner approves each new person), `owner_only`. |
-| Channel binding | `kortix channels bind <bindingId> --agent slack-ops --policy owner_approval` | The same settings, from a terminal. |
+| Agent | the channel, in the Channels scope | Which agent runs there; `default_agent` otherwise |
+| Model | the channel, or the session's composer | Which model the next thread starts on |
+| Join policy | the channel | Who may join a session that started there |
 
-Model choice is where an open-source stack earns its keep: `/kortix models`
-lists what the channel can run and how each is paid for, and a channel uses keys
-shared with the whole project while a DM can use a person's own keys.
+Join policy has three values. Open, the default, admits any linked project
+member. Approval has the session owner approve or deny each new person. Owner
+only keeps a session to the person who started it.
+
+Model choice is where an open-source stack earns its keep. Pin one on the agent
+in `kortix.yaml` with its `model` key, which takes `provider/model`, or choose a
+model in the composer for a single session.
 
 ## What the agent may read and post
 
@@ -89,8 +90,8 @@ prints the schema before you call one.
 
 | Symptom | Check |
 | --- | --- |
-| No reply in the thread | `kortix channels status`; is the bot in the channel? Was the message a mention? |
-| "Link your account" prompt | `/kortix whoami`, then `/kortix login` again. |
+| No reply in the thread | Is the bot in the channel? Was the message a mention? A reply without one stays between people. |
+| "Link your account" prompt | Send `/kortix login` in that workspace and open the link within 10 minutes. |
 | A connector call sits at pending | The approval card in the thread, or **Review → Needs you**. Approve or deny; a retry does nothing. |
-| A call is refused with `conversation_not_in_project` | The channel belongs to another project on the same workspace. `/kortix switch` in that channel. |
+| A call is refused with `conversation_not_in_project` | The channel is bound to another project on the same workspace; the first message in a new channel shows a project picker. |
 | Trigger digest never posts | The channel id in the `morning-digest` prompt is a placeholder; set it to the ops channel's id. |
