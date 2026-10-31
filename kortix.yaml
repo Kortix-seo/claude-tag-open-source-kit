@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://kortix.com/schema/kortix.v2.schema.json
 #
-# A Slack agent on the open-source Kortix AI Operating System.
+# A Slack agent on the open-source Kortix CompanyOS.
 # The grants below are the whole security review: deny-by-default, and every
 # write is either held for approval or blocked.
 #
