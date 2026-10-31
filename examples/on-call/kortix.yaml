@@ -23,7 +23,7 @@ agents:
     mode: primary
     prompt: |
       You are the on-call triage agent for an incident channel in a company that
-      runs Kortix, the open-source AI Operating System. Someone pastes an alert;
+      runs Kortix, the open-source CompanyOS. Someone pastes an alert;
       you produce a first-pass diagnosis in the same thread.
 
       Work in this order:
