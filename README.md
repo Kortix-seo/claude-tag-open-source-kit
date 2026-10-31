@@ -1,10 +1,10 @@
 # Claude Tag, run on an open-source stack you own
 
-Kortix is the open-source AI Operating System: your agents, skills, company memory and connectors live in one git repo you own, and every session runs on its own cloud computer.
+Kortix is the open-source CompanyOS: your agents, skills, company memory and connectors live in one git repo you own, and every session runs on its own cloud computer.
 
 This repo is a working Kortix project built for one job: putting an AI agent in a Slack channel where the grants it runs under and the review of its work are files you can read, diff and revert. It is the open-source alternative to Anthropic's Claude Tag for teams that want the Slack thread without handing the runtime, the model choice and the deployment to someone else.
 
-Anthropic's own announcement describes Claude Tag as a Slack teammate that admins provision per channel, in beta for Claude Enterprise and Team customers, running Opus 4.8, with an activity log and org-level spend limits ([anthropic.com/news/introducing-claude-tag](https://www.anthropic.com/news/introducing-claude-tag), read 23 Oct 2026). That is a good product, and if your company is already on Claude Enterprise, it is the shortest path to a first Slack agent. This kit is for the case it does not cover: the agent's configuration, its permissions and its change history live in your repository, it can run on a model you pick, and it runs where you deploy it.
+Anthropic's own announcement describes Claude Tag as a Slack teammate, in beta on the Team and Enterprise plans and running Opus 4.8 ([anthropic.com/news/introducing-claude-tag](https://www.anthropic.com/news/introducing-claude-tag)). Only a Primary Owner or Owner can set up Claude Tag's access and channels; the Admin role can't. An Owner sets an organization-wide cap, per-channel limits and alerts at 75% and 95 percent, and work over a limit is declined rather than trimmed. The Activity page in Organization settings lists every scheduled and one-time task plus every network call made under the agent identity, and only Owners can open it ([support.claude.com/en/articles/15594475-what-is-claude-tag](https://support.claude.com/en/articles/15594475-what-is-claude-tag), both read 31 Oct 2026). That is a good product, and if your company is already on Claude Enterprise, it is the shortest path to a first Slack agent. This kit is for the case it does not cover: the agent's configuration, its permissions and its change history live in your repository, it can run on a model you pick, and it runs where you deploy it.
 
 ## What is in the box
 
@@ -29,12 +29,11 @@ kortix init claude-tag-kit            # or clone this repo and run the next line
 kortix validate                       # schema check; exits 1 on an error
 bash scripts/check-grants.sh             # this repo's own guard against blanket grants
 kortix ship                           # push the manifest and start the project
-kortix channels connect               # Slack: open the link, pick the workspace, allow
 ```
 
-Then, in Slack: invite the bot to the channel, send `/kortix login` once to link your account, and mention the bot with a task. One Slack thread is one session; the agent works on its own cloud computer and replies in that thread. Full steps, including the commands each person runs and what the bot may read, are in [docs/slack-setup.md](docs/slack-setup.md).
+Then connect Slack from the project: open **Customize → Connectors**, select the **Channels** scope and choose **Add to Slack**. Invite the bot to the channel in Slack, send `/kortix login` once to link your account, and mention the bot with a task. One Slack thread is one session; the agent works on its own cloud computer and replies in that thread. Full steps, including the commands each person runs and what the bot may read, are in [docs/slack-setup.md](docs/slack-setup.md).
 
-Nothing in this repo needs an Anthropic account. The model is the project default until you pin one per agent or per channel; `kortix agents model slack-ops <model-id>` sets it, and `/kortix models` lists what the channel can run.
+Nothing in this repo needs an Anthropic account. A session runs on the model chosen for the channel or the session, then the model pinned to the agent, then the project default. Pin one on the agent with its `model` key, which takes `provider/model`, or pick one for a session in the composer's model picker.
 
 ## The manifest is the security review
 
